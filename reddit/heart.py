@@ -47,10 +47,10 @@ def crawl():
 
         for reply in get_children:
             scrap_messages = reply['data'].get('body', None)
-            parentReply.append(scrap_messages)
+            if scrap_messages:
+                parentReply.append(scrap_messages)
 
         time.sleep(random.randint(10, 20))
-        print(parentReply)
         logData()
 
 
@@ -59,10 +59,27 @@ def logData():
                             f"password={os.environ.get('PASSWORD')} port={os.environ.get('PORT')} host={os.environ.get('HOST')}")
     cur = conn.cursor()
 
+    prevCheck()
+
     for message in parentReply:
         cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
     conn.commit()
     parentReply.clear()
+
+
+def prevCheck():
+    conn = psycopg2.connect(f"dbname={os.environ.get('DB_NAME')} user={os.environ.get('USER')} "
+                            f"password={os.environ.get('PASSWORD')} port={os.environ.get('PORT')} host={os.environ.get('HOST')}")
+    cur = conn.cursor()
+    for reply in parentReply:
+        cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (reply,))
+        rows = cur.fetchall()
+        if not rows:
+            print(reply)
+            continue
+        else:
+            print("Removed")
+            parentReply.remove(reply)
 
 
 gather()

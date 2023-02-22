@@ -19,7 +19,7 @@ def crawl():
             break
         except error.HTTPError as e:
             if e.code == 429 or e.code == 503:
-                print('Second connection failed. Retrying...')
+                print('Connection failed. Retrying...')
                 time.sleep(random.randint(10, 20))
             else:
                 raise e
@@ -55,4 +55,4 @@ def logData():
 
 while True:
     crawl()
-    time.sleep(random.randint(60, 120))
+    time.sleep(random.randint(30, 60))

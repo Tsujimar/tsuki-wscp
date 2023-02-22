@@ -80,4 +80,4 @@ def logData():
 
 while True:
     gather()
-    time.sleep(random.randint(60, 120))
+    time.sleep(random.randint(30, 60))

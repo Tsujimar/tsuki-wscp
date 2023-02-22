@@ -19,7 +19,7 @@ def gather():
             response = request.urlopen(url)
             break
         except error.HTTPError as e:
-            if e.code == 503:
+            if e.code == 503 or e.code == 429:
                 print("Reddit api is temporarily down. Retrying after 1 minute")
                 time.sleep(60)
             else:

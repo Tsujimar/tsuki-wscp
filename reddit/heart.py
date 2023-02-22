@@ -11,9 +11,19 @@ load_dotenv()
 postList = []
 parentReply = []
 
+
 def gather():
     url = 'https://www.reddit.com/.json?limit=1000'
-    response = request.urlopen(url)
+    while True:
+        try:
+            response = request.urlopen(url)
+            break
+        except error.HTTPError as e:
+            if e.code == 503:
+                print("Reddit api is temporarily down. Retrying after 1 minute")
+                time.sleep(60)
+            else:
+                raise e
     json_data = json.loads(response.read().decode())
     get_posts = json_data['data']['children']
 

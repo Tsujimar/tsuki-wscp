@@ -52,7 +52,11 @@ def grab():
                     raise e
 
         json_data = json.loads(response.read().decode())
-        get_children = json_data[1]['data']['children'][1:]
+
+        try:
+            get_children = json_data[1]['data']['children'][1:]
+        except KeyError as e:
+            raise e
 
         for reply in get_children:
             scrap_messages = reply['data'].get('body', None)

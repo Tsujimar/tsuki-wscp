@@ -56,7 +56,11 @@ def grab():
         try:
             get_children = json_data[1]['data']['children'][1:]
         except KeyError as e:
-            raise e
+            if e.code == 1:
+                print("Encountered an error. Retrying...")
+                time.sleep(random.randint(10, 20))
+            else:
+                raise e
 
         for reply in get_children:
             scrap_messages = reply['data'].get('body', None)

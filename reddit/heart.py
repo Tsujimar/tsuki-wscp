@@ -45,7 +45,7 @@ def crawl():
                 response = request.urlopen(url2)
                 break
             except (error.HTTPError, UnicodeEncodeError) as e:
-                if isinstance(e, error.HTTPError) and e.code == 429:
+                if isinstance(e, error.HTTPError) or e.code == 429:
                     print("Reached maximum requests, waiting and retrying...")
                     time.sleep(random.randint(10, 20))
                 else:

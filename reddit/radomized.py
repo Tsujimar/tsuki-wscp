@@ -18,7 +18,7 @@ def crawl():
             response = request.urlopen(url3)
             break
         except error.HTTPError as e:
-            if e.code == 429 or e.code == 503:
+            if e.code == 429 or e.code == 503 or e.code == 403:
                 print('Connection failed. Retrying...')
                 time.sleep(random.randint(10, 20))
             else:

@@ -56,7 +56,7 @@ def grab():
         try:
             get_children = json_data[1]['data']['children'][1:]
         except KeyError as e:
-            if e.code == 1:
+            if e:
                 print("Encountered an error. Retrying...")
                 time.sleep(random.randint(10, 20))
             else:

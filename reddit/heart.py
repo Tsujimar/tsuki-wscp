@@ -53,6 +53,7 @@ def crawl():
                         raise e
                 elif isinstance(e, UnicodeEncodeError):
                     print("Encountered a UnicodeEncodeError: " + str(e) + ". Retrying...")
+                    crawl()
                 else:
                     raise e
 

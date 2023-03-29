@@ -44,7 +44,7 @@ def logData():
 
     for message in secondaryParent:
         if message:
-            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
+            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', message)
             rows = cur.fetchall()
             if not rows:
                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))

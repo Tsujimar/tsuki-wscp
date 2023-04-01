@@ -46,12 +46,16 @@ def crawler():
                     soup = BeautifulSoup(html, "html.parser")
                     comments = soup.find_all("div", class_="postContainer replyContainer rExpanded")
                     for comment in comments:
-                        print(comment.get_text())
+                        refurnished = comment.get_text().split()[5:]
+                        joined = " ".join(refurnished)
+                        new_text = re.sub(r"No.\d{9}▶|>>\d{9}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d.*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{3}\)\d{2}:\d{2}:\d{2}\b", "", joined)
+                        if len(new_text) != 0:
+                            print(new_text)
                 count += 1
             except error.HTTPError as e:
                 if e.code == 404:
                     count = 2
-            except WebDriverException as e:
+            except WebDriverException:
                 count = 2
 
 

@@ -37,10 +37,11 @@ def crawler():
                     if head_line is not None and post_message is not None:
                         hl_t = head_line.get_text()
                         pm_t = post_message.get_text()
-                        print(f"Added {hl_t} and {pm_t}")
                         cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s AND "message" = %s', (hl_t, pm_t))
                         rows = cur.fetchall()
                         if not rows:
+                            print(f"Added {hl_t}")
+                            print(f"Added {pm_t}")
                             cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                         (hl_t, "4Chan"))
                             cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
@@ -63,12 +64,12 @@ def crawler():
                     for comment in comments:
                         refurnished = comment.get_text().split()[5:]
                         joined = " ".join(refurnished)
-                        new_text = re.sub(r"No.\d{9}▶|>>\d{9}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d.*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{3}\)\d{2}:\d{2}:\d{2}\b", "", joined)
+                        new_text = re.sub(r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d.*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b", "", joined)
                         if len(new_text) != 0:
-                            print(f"Added {new_text}")
                             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (new_text,))
                             rows = cur.fetchall()
                             if not rows:
+                                print(f"Added {new_text}")
                                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                             (new_text, "4Chan"))
                         conn.commit()

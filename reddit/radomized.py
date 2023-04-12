@@ -5,6 +5,7 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 import random
+import re
 
 load_dotenv()
 
@@ -43,6 +44,7 @@ def logData():
     cur = conn.cursor()
 
     for message in secondaryParent:
+        message = re.sub(r"u/[^ ]+", message)
         if message:
             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
             rows = cur.fetchall()

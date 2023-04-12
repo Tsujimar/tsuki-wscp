@@ -62,10 +62,10 @@ def crawler():
                     soup = BeautifulSoup(html, "html.parser")
                     comments = soup.find_all("div", class_="postContainer replyContainer rExpanded")
                     for comment in comments:
-                        refurnished = comment.get_text().split()[5:]
-                        joined = " ".join(refurnished)
-                        new_text = re.sub(r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}\\d{2}\\d{2}|(.*\w)\d.*"
-                                          r"(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "", joined)
+                        comment = comment.find("blockquote", class_="postMessage")
+                        refurnished = comment.get_text()
+                        new_text = re.sub(r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d."
+                                          r"*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "", refurnished)
                         if len(new_text) != 0:
                             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (new_text,))
                             rows = cur.fetchall()

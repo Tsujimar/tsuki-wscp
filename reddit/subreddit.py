@@ -5,6 +5,7 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 import random
+import re
 
 load_dotenv()
 

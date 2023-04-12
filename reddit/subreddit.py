@@ -84,6 +84,7 @@ def logData():
             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
             rows = cur.fetchall()
             if not rows:
+                print(f"Added {message}")
                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
     conn.commit()

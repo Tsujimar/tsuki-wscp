@@ -49,12 +49,12 @@ def crawler():
                     conn.commit()
                 # Scrape comments
                 driver.get(url)
-                toggle_buttons = WebDriverWait(driver, 5).until(
+                toggle_buttons = WebDriverWait(driver, 1).until(
                     EC.presence_of_all_elements_located((By.CSS_SELECTOR, "[data-cmd='expand']"))
                 )
                 for toggle_button in toggle_buttons:
                     toggle_button.click()
-                    WebDriverWait(driver, 5).until(
+                    WebDriverWait(driver, 1).until(
                         EC.presence_of_element_located(
                             (By.CSS_SELECTOR, "[src='//s.4cdn.org/image/buttons/burichan/post_expand_minus.png']"))
                     )

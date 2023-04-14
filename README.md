@@ -1,6 +1,6 @@
 ## tsuki-wscp
 tsuki-wscp is a web scraper that provides data collection for AI model training
-## Supported platforms (more to come)
+## Supported sources (more to come)
 - 4Chan
 - Reddit
 ## What to expect

@@ -10,6 +10,7 @@ from selenium.common.exceptions import WebDriverException
 import psycopg2
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
 
 
@@ -19,9 +20,9 @@ def crawler():
     cur = conn.cursor()
     # board = sys.argv[2]
     driver = webdriver.Firefox()
-    # 'a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa', 'fit', 'gd', 'his',
-    # 'int', 'jp', 'lit', 'mlp', 'mu', 'n', 'news', 'out', 'po', 'pw', 'qst', 'sci',
-    boards = ['sp', 'tg', 'toy', 'trv', 'tv', 'vp', 'vt', 'wsg', 'wsr', 'x', 'xs']
+    boards = ['a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa', 'fit',
+              'gd', 'his', 'int', 'jp', 'lit', 'mlp', 'mu', 'n', 'news', 'out', 'po', 'pw', 'qst', 'sci', 'sp', 'tg', 'toy', 'trv',
+              'tv', 'vp', 'vt', 'wsg', 'wsr', 'x', 'xs']
     for board in boards:
         count = 0
         while count != 11:
@@ -65,7 +66,8 @@ def crawler():
                         comment = comment.find("blockquote", class_="postMessage")
                         refurnished = comment.get_text()
                         new_text = re.sub(r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d."
-                                          r"*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "", refurnished)
+                                          r"*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "",
+                                          refurnished)
                         if len(new_text) != 0:
                             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (new_text,))
                             rows = cur.fetchall()

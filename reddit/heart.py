@@ -2,12 +2,9 @@ import json
 import time
 from urllib import request, error
 import psycopg2
-from dotenv import load_dotenv
 import os
 import random
 import re
-
-load_dotenv()
 
 postList = []
 parentReply = []
@@ -71,8 +68,17 @@ def crawl():
 
 
 def logData():
-    conn = psycopg2.connect(f"dbname={os.environ.get('DB_NAME')} user={os.environ.get('USER')} "
-                            f"password={os.environ.get('PASSWORD')} port={os.environ.get('PORT')} host={os.environ.get('HOST')}")
+    try:
+        conn = psycopg2.connect(
+            dbname=os.environ["DB_NAME"],
+            user=os.environ["PG_USER"],
+            password=os.environ["PG_PASSWORD"],
+            port=os.environ["PG_PORT"],
+            host=os.environ["PG_HOST"]
+        )
+    except KeyError:
+        print("Missing or wrong DB credentials.")
+
     cur = conn.cursor()
 
     for message in parentReply:

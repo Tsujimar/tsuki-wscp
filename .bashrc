@@ -1,0 +1,5 @@
+export DB_NAME=your_database_name
+export PG_USER=your_postgres_user
+export PG_PASSWORD=your_postgres_password
+export PG_PORT=your_postgres_port
+export PG_HOST=your_postgres_host

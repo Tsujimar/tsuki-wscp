@@ -1,5 +1,4 @@
 import re
-import sys
 from bs4 import BeautifulSoup
 from urllib import request, error
 from selenium import webdriver
@@ -8,14 +7,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 import psycopg2
-from dotenv import load_dotenv
 import os
-load_dotenv()
 
 
 def crawler():
-    conn = psycopg2.connect(f"dbname={os.environ.get('DB_NAME')} user={os.environ.get('USER')} "
-                            f"password={os.environ.get('PASSWORD')} port={os.environ.get('PORT')} host={os.environ.get('HOST')}")
+    try:
+        conn = psycopg2.connect(
+            dbname=os.environ["DB_NAME"],
+            user=os.environ["PG_USER"],
+            password=os.environ["PG_PASSWORD"],
+            port=os.environ["PG_PORT"],
+            host=os.environ["PG_HOST"]
+        )
+    except KeyError:
+        print("Missing or wrong DB credentials.")
+
     cur = conn.cursor()
     driver = webdriver.Firefox()
     default_boards = ['a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa', 'fit', 'gd',

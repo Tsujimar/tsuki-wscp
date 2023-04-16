@@ -8,18 +8,25 @@ tsuki-wscp is a web scraper that provides data collection for AI model training
 - Apx 100-130 data rows a second
 - Constant 20-30% cpu usage
 - 10-20 Mbps network usage
+## [Linux] 
+- Before running the script make sure you edit the ``.bashrc`` file with your DB credentials.
+## [Windows]
+- Open the Start menu and search for "Environment Variables".
+- Click on "Edit the system environment variables".
+- Click on the "Environment Variables" button.
+- Under "User variables" (or "System variables" for all users), click the "New" button.
+- Enter a variable name (e.g., DB_NAME) and its value (e.g., your_database_name).
+- Repeat steps 4-5 for each environment variable.
+- Click "OK" to save the changes.
+
+Note: You may need to restart your system to apply changes.
 ## Usage
-```python3 tsuki-wscp [-s {1-5}] [--nsfw-toggle]```
+[Linux] ```python3 tsuki-wscp [-s {1-5}] [--nsfw-toggle]```
+
+[Windows] ```py tsuki-wscp [-s {1-5}] [--nsfw-toggle]```
 - The ```-s``` option is used to specify the driver delay. The value should be between 1 and 5. A higher delay can help prevent your IP from being blocked by the website.
 - The ```--nsfw-toggle``` option enables scraping of highly NSFW boards. Note that this option should only be used if you are of legal age and comfortable with such content. 
 - Please keep in mind that even the default boards WILL HAVE nsfw content but not as much.
-
-Before running the script make sure you set the environment variables
-- export DB_NAME=your_database_name
-- export PG_USER=your_postgres_user
-- export PG_PASSWORD=your_postgres_password
-- export PG_PORT=your_postgres_port
-- export PG_HOST=your_postgres_host
 ## Requirements
 To use tsuki-wscp, you will need the following:
 - Python 3

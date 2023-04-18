@@ -9,6 +9,14 @@ from sys import exit
 
 secondaryParent = []
 
+os.system("")
+
+
+class style():
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+
 
 def crawl():
     url3 = 'https://www.reddit.com/random.json?limit=1000'
@@ -18,7 +26,8 @@ def crawl():
             break
         except error.HTTPError as e:
             if e.code == 429 or e.code == 503 or e.code == 403:
-                print('Connection failed. Retrying...')
+                print(style.YELLOW + "[Reddit]", end='')
+                print(style.RED + 'Connection failed. Retrying...')
                 time.sleep(random.randint(10, 20))
             else:
                 raise e
@@ -32,7 +41,6 @@ def crawl():
             secondaryParent.append(scrap_messages)
 
     time.sleep(random.randint(10, 20))
-    print(len(secondaryParent))
     logData()
 
 
@@ -54,13 +62,16 @@ def logData():
                 cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
                 rows = cur.fetchall()
                 if not rows:
-                    print(f"Added {message}")
+                    print(style.YELLOW + "[Reddit]", end='')
+                    print(style.GREEN + "Added", end=' ')
+                    print(message)
                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
         conn.commit()
         secondaryParent.clear()
     except KeyError:
-        print("Missing or wrong DB credentials.")
+        print(style.YELLOW + "[Reddit]", end='')
+        print(style.RED + "Missing or wrong DB credentials.")
         exit()
 
 

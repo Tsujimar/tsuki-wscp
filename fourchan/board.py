@@ -10,6 +10,14 @@ import psycopg2
 import os
 from sys import exit
 
+os.system("")
+
+
+class style():
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+
 
 def crawler(delay, is_nsfw):
     try:
@@ -23,14 +31,20 @@ def crawler(delay, is_nsfw):
 
         cur = conn.cursor()
         driver = webdriver.Firefox()
-        sfw_boards = ['a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa', 'fit', 'gd',
-                          'his', 'int', 'jp', 'lit', 'mlp', 'mu', 'n', 'news', 'out', 'po', 'pw', 'qst', 'sci', 'sp', 'tg', 'toy', 'trv',
-                          'tv', 'vp', 'vt', 'wsg', 'wsr', 'x', 'xs']
-        nsfw_boards = ["3", "a", "aco", "adv", "an", "asp", "b", "bant", "biz", "c", "cgl", "ck", "cm", "co", "d", "diy", "e",
-                      "f", "fa", "fit", "g", "gd", "gif", "h", "hc", "his", "hm", "hr", "i", "ic", "int", "jp", "k", "lgbt",
-                      "lit", "m", "mlp", "mu", "n", "news", "o", "out", "p", "po", "pol", "qa", "qst", "r", "r9k", "s", "s4s",
-                      "sci", "soc", "sp", "t", "tg", "toy", "trash", "trv", "tv", "u", "v", "vg", "vip", "vp", "vr", "vrpg",
-                      "vst", "w", "wg", "wsg", "wsr", "x", "y"]
+        sfw_boards = ['a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa',
+                      'fit', 'gd',
+                      'his', 'int', 'jp', 'lit', 'mlp', 'mu', 'n', 'news', 'out', 'po', 'pw', 'qst', 'sci', 'sp', 'tg',
+                      'toy', 'trv',
+                      'tv', 'vp', 'vt', 'wsg', 'wsr', 'x', 'xs']
+        nsfw_boards = ["3", "a", "aco", "adv", "an", "asp", "b", "bant", "biz", "c", "cgl", "ck", "cm", "co", "d",
+                       "diy", "e",
+                       "f", "fa", "fit", "g", "gd", "gif", "h", "hc", "his", "hm", "hr", "i", "ic", "int", "jp", "k",
+                       "lgbt",
+                       "lit", "m", "mlp", "mu", "n", "news", "o", "out", "p", "po", "pol", "qa", "qst", "r", "r9k", "s",
+                       "s4s",
+                       "sci", "soc", "sp", "t", "tg", "toy", "trash", "trv", "tv", "u", "v", "vg", "vip", "vp", "vr",
+                       "vrpg",
+                       "vst", "w", "wg", "wsg", "wsr", "x", "y"]
         if is_nsfw:
             default_boards = nsfw_boards
         else:
@@ -48,16 +62,15 @@ def crawler(delay, is_nsfw):
                     for i in range(len(main_content)):
                         head_line = main_content[i].find('span', attrs={'data-tip-cb': True})
                         post_message = main_content[i].find('blockquote', class_="postMessage")
-                        if head_line is not None and post_message is not None:
+                        if post_message is not None:
                             hl_t = head_line.get_text()
                             pm_t = post_message.get_text()
-                            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s AND "message" = %s', (hl_t, pm_t))
+                            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s AND "message" = %s',
+                                        (hl_t, pm_t))
                             rows = cur.fetchall()
                             if not rows:
-                                print(f"Added {hl_t}")
-                                print(f"Added {pm_t}")
-                                cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
-                                            (hl_t, "4Chan"))
+                                print(style.GREEN + "Added", end=' ')
+                                print(pm_t)
                                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                             (pm_t, "4Chan"))
                         conn.commit()
@@ -78,13 +91,16 @@ def crawler(delay, is_nsfw):
                         for comment in comments:
                             comment = comment.find("blockquote", class_="postMessage")
                             refurnished = comment.get_text()
-                            new_text = re.sub(r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d."
-                                              r"*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "", refurnished)
+                            new_text = re.sub(
+                                r"No.\d{2,}▶|>>\d{2,}|File:.*.(jpg|png|webm|gif)|\d{2}/\d{2}/\d{2}|(.*\w)\d."
+                                r"*(JPG|PNG|WEBM|GIF)|\b\w+\s\(\w{2,}\)\d{2}:\d{2}:\d{2}\b|.*(OP).|>", "", refurnished)
                             if len(new_text) != 0:
                                 cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (new_text,))
                                 rows = cur.fetchall()
                                 if not rows:
-                                    print(f"Added {new_text}")
+                                    print(style.YELLOW + "[4Chan]", end='')
+                                    print(style.GREEN + "Added", end=' ')
+                                    print(new_text)
                                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                                 (new_text, "4Chan"))
                             conn.commit()
@@ -95,7 +111,8 @@ def crawler(delay, is_nsfw):
                 except WebDriverException:
                     count = 2
     except KeyError:
-        print("Missing or wrong DB credentials.")
+        print(style.YELLOW + "[4Chan]", end='')
+        print(style.RED + "Missing or wrong DB credentials.")
         exit()
 
 

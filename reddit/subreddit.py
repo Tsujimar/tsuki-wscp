@@ -10,6 +10,14 @@ from sys import exit
 subList = []
 messages = []
 
+os.system("")
+
+
+class style():
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+
 
 def crawl():
     url3 = 'https://www.reddit.com/.json?limit=1000'
@@ -19,7 +27,7 @@ def crawl():
             break
         except error.HTTPError as e:
             if e.code == 429 or e.code == 503:
-                print('Connection failed. Retrying...')
+                print(style.RED + 'Connection failed. Retrying...')
                 time.sleep(random.randint(10, 20))
             else:
                 raise e
@@ -45,7 +53,7 @@ def grab():
                 break
             except error.HTTPError as e:
                 if e.code == 429 or e.code == 503 or e.code == 500:
-                    print('Connection failed. Retrying...')
+                    print(style.RED + 'Connection failed. Retrying...')
                     time.sleep(random.randint(10, 20))
                 else:
                     raise e
@@ -56,7 +64,8 @@ def grab():
             get_children = json_data[1]['data']['children'][1:]
         except KeyError as e:
             if e:
-                print("Encountered an error. Retrying...")
+                print(style.YELLOW + "[Reddit]", end='')
+                print(style.RED + "Encountered an error. Retrying...")
                 time.sleep(random.randint(10, 20))
             else:
                 raise e
@@ -67,7 +76,6 @@ def grab():
                 messages.append(scrap_messages)
 
         time.sleep(random.randint(10, 20))
-        print(f"Iterating through {len(messages)}...")
         logData()
 
 
@@ -89,14 +97,16 @@ def logData():
                 cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
                 rows = cur.fetchall()
                 if not rows:
-                    print(f"Added {message}")
+                    print(style.YELLOW + "[Reddit]", end='')
+                    print(style.GREEN + "Added", end=' ')
+                    print(message)
                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
         conn.commit()
-        print("Added messages successfully to DB, returning")
         messages.clear()
     except KeyError:
-        print("Missing or wrong DB credentials.")
+        print(style.YELLOW + "[Reddit]", end='')
+        print(style.RED + "Missing or wrong DB credentials.")
         exit()
 
 

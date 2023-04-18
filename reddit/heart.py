@@ -10,6 +10,14 @@ from sys import exit
 postList = []
 parentReply = []
 
+os.system("")
+
+
+class style():
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+
 
 def gather():
     url = 'https://www.reddit.com/.json?limit=1000'
@@ -19,7 +27,8 @@ def gather():
             break
         except error.HTTPError as e:
             if e.code == 503 or e.code == 429:
-                print("Reddit api is temporarily down. Retrying after 1 minute")
+                print(style.YELLOW + "[Reddit]", end='')
+                print(style.RED + "Api is temporarily down. Retrying after 1 minute")
                 time.sleep(60)
             else:
                 raise e
@@ -30,7 +39,6 @@ def gather():
         permalink = post['data'].get('permalink', None)
         if permalink:
             postList.append({'permalink': permalink})
-    print(len(postList))
     crawl()
 
 
@@ -46,12 +54,14 @@ def crawl():
             except (error.HTTPError, UnicodeEncodeError) as e:
                 if isinstance(e, error.HTTPError):
                     if e.code == 429:
-                        print("Reached maximum requests, waiting and retrying...")
+                        print(style.YELLOW + "[Reddit]", end='')
+                        print(style.RED + "Reached maximum requests, waiting and retrying...")
                         time.sleep(random.randint(10, 20))
                     else:
                         raise e
                 elif isinstance(e, UnicodeEncodeError):
-                    print("Encountered a UnicodeEncodeError: " + str(e) + ". Retrying...")
+                    print(style.YELLOW + "[Reddit]", end='')
+                    print(style.RED + "Encountered a UnicodeEncodeError: " + str(e) + ". Retrying...")
                     crawl()
                 else:
                     raise e
@@ -85,13 +95,16 @@ def logData():
             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
             rows = cur.fetchall()
             if not rows:
-                print(f"Added {message}")
+                print(style.YELLOW + "[Reddit]", end='')
+                print(style.GREEN + "Added", end=' ')
+                print(message)
                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
         conn.commit()
         parentReply.clear()
     except KeyError:
-        print("Missing or wrong DB credentials.")
+        print(style.YELLOW + "[Reddit]", end='')
+        print(style.RED + "Missing or wrong DB credentials.")
         exit()
 
 

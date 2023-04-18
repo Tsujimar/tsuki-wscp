@@ -93,6 +93,8 @@ def logData():
     parentReply.clear()
 
 
-while True:
-    gather()
-    time.sleep(random.randint(30, 60))
+def call_gather():
+    print("heart.py loaded successfuly")
+    while True:
+        gather()
+        time.sleep(random.randint(30, 60))

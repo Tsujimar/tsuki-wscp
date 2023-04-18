@@ -16,6 +16,7 @@ class style():
     RED = '\033[31m'
     GREEN = '\033[32m'
     YELLOW = '\033[33m'
+    RESET = '\033[0m'
 
 
 def crawl():
@@ -64,7 +65,7 @@ def logData():
                 if not rows:
                     print(style.YELLOW + "[Reddit]", end='')
                     print(style.GREEN + "Added", end=' ')
-                    print(message)
+                    print(style.RESET + message)
                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
         conn.commit()

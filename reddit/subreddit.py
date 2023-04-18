@@ -17,6 +17,7 @@ class style():
     RED = '\033[31m'
     GREEN = '\033[32m'
     YELLOW = '\033[33m'
+    RESET = '\033[0m'
 
 
 def crawl():
@@ -27,6 +28,7 @@ def crawl():
             break
         except error.HTTPError as e:
             if e.code == 429 or e.code == 503:
+                print(style.YELLOW + "[Reddit]", end='')
                 print(style.RED + 'Connection failed. Retrying...')
                 time.sleep(random.randint(10, 20))
             else:
@@ -53,6 +55,7 @@ def grab():
                 break
             except error.HTTPError as e:
                 if e.code == 429 or e.code == 503 or e.code == 500:
+                    print(style.YELLOW + "[Reddit]", end='')
                     print(style.RED + 'Connection failed. Retrying...')
                     time.sleep(random.randint(10, 20))
                 else:
@@ -99,7 +102,7 @@ def logData():
                 if not rows:
                     print(style.YELLOW + "[Reddit]", end='')
                     print(style.GREEN + "Added", end=' ')
-                    print(message)
+                    print(style.RESET + message)
                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
 
         conn.commit()

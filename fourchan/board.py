@@ -17,6 +17,7 @@ class style():
     RED = '\033[31m'
     GREEN = '\033[32m'
     YELLOW = '\033[33m'
+    RESET = '\033[0m'
 
 
 def crawler(delay, is_nsfw):
@@ -60,17 +61,15 @@ def crawler(delay, is_nsfw):
                     soup = BeautifulSoup(response, 'html.parser')
                     main_content = soup.find_all('div', id=re.compile("t"))
                     for i in range(len(main_content)):
-                        head_line = main_content[i].find('span', attrs={'data-tip-cb': True})
                         post_message = main_content[i].find('blockquote', class_="postMessage")
                         if post_message is not None:
-                            hl_t = head_line.get_text()
                             pm_t = post_message.get_text()
                             cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s AND "message" = %s',
-                                        (hl_t, pm_t))
+                                        (pm_t))
                             rows = cur.fetchall()
                             if not rows:
                                 print(style.GREEN + "Added", end=' ')
-                                print(pm_t)
+                                print(style.RESET + pm_t)
                                 cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                             (pm_t, "4Chan"))
                         conn.commit()
@@ -100,7 +99,7 @@ def crawler(delay, is_nsfw):
                                 if not rows:
                                     print(style.YELLOW + "[4Chan]", end='')
                                     print(style.GREEN + "Added", end=' ')
-                                    print(new_text)
+                                    print(style.RESET + new_text)
                                     cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)',
                                                 (new_text, "4Chan"))
                             conn.commit()

@@ -13,6 +13,7 @@ tsuki-wscp is a web scraper that provides data collection for AI model training
 - Run ``pip install -r requirements.txt``		
 - Run ``pip install selenium``
 - Run ``pip install psycopg2-binary``
+- Run ``pip install bs4``
 ## [Windows]
 - Open the Start menu and search for "Environment Variables".
 - Click on "Edit the system environment variables".

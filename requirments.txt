@@ -1,0 +1,13 @@
+attrs==22.2.0
+beautifulsoup4==4.12.2
+bs4==0.0.1
+btrfsutil==6.1.2
+cffi==1.15.1
+cryptography==39.0.2
+distro==1.8.0
+packaging==23.0
+ply==3.11
+psutil==5.9.4
+pycparser==2.21
+soupsieve==2.4.1
+team==1.0

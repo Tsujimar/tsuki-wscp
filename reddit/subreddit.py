@@ -97,7 +97,8 @@ def logData():
     print("Added messages successfully to DB, returning")
     messages.clear()
 
-
-while True:
-    crawl()
-    time.sleep(random.randint(30, 60))
+def call_subreddit():
+    print("subreddit.py loaded successfully")
+    while True:
+        crawl()
+        time.sleep(random.randint(30, 60))

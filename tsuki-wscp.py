@@ -58,3 +58,5 @@ if platform == "linux":
     bashrc_path = '.bashrc'
     subprocess.call(["/usr/bin/bash", "-i", "-c", "source " + bashrc_path])
     init_harvester()
+else:
+    init_harvester()

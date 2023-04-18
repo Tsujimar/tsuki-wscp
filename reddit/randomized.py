@@ -5,6 +5,7 @@ import psycopg2
 import os
 import random
 import re
+from sys import exit
 
 secondaryParent = []
 
@@ -60,6 +61,7 @@ def logData():
         secondaryParent.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
+        exit()
 
 
 def call_randomizer():

@@ -5,6 +5,7 @@ import psycopg2
 import os
 import random
 import re
+from sys import exit
 
 subList = []
 messages = []
@@ -96,6 +97,7 @@ def logData():
         messages.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
+        exit()
 
 
 def call_subreddit():

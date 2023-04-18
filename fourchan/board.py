@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import WebDriverException
 import psycopg2
 import os
+from sys import exit
 
 
 def crawler(delay, is_nsfw):
@@ -95,6 +96,7 @@ def crawler(delay, is_nsfw):
                     count = 2
     except KeyError:
         print("Missing or wrong DB credentials.")
+        exit()
 
 
 def call_crawler(delay, is_nsfw):

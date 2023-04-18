@@ -5,6 +5,7 @@ import psycopg2
 import os
 import random
 import re
+from sys import exit
 
 postList = []
 parentReply = []
@@ -91,6 +92,7 @@ def logData():
         parentReply.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
+        exit()
 
 
 def call_gather():

@@ -11,3 +11,5 @@ psutil==5.9.4
 pycparser==2.21
 soupsieve==2.4.1
 team==1.0
+psycopg2-binary==2.9.6
+selenium==4.8.3

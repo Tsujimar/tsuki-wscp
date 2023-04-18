@@ -10,6 +10,9 @@ tsuki-wscp is a web scraper that provides data collection for AI model training
 - 10-20 Mbps network usage
 ## [Linux] 
 - Before running the script make sure you edit the ``.bashrc`` file with your DB credentials.
+- Run ``pip install -r requirements.txt``		
+- Run ``pip install selenium``
+- Run ``pip install psycopg2-binary``
 ## [Windows]
 - Open the Start menu and search for "Environment Variables".
 - Click on "Edit the system environment variables".

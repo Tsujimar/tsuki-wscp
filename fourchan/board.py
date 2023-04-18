@@ -64,8 +64,8 @@ def crawler(delay, is_nsfw):
                         post_message = main_content[i].find('blockquote', class_="postMessage")
                         if post_message is not None:
                             pm_t = post_message.get_text()
-                            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s AND "message" = %s',
-                                        (pm_t))
+                            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s',
+                                        (pm_t,))
                             rows = cur.fetchall()
                             if not rows:
                                 print(style.GREEN + "Added", end=' ')

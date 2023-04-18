@@ -44,22 +44,23 @@ def logData():
             port=os.environ["PG_PORT"],
             host=os.environ["PG_HOST"]
         )
+
+        cur = conn.cursor()
+
+        for message in secondaryParent:
+            message = re.sub(r"u/[^ ]+", "", message)
+            if message:
+                cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
+                rows = cur.fetchall()
+                if not rows:
+                    print(f"Added {message}")
+                    cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
+
+        conn.commit()
+        secondaryParent.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
 
-    cur = conn.cursor()
-
-    for message in secondaryParent:
-        message = re.sub(r"u/[^ ]+", "", message)
-        if message:
-            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
-            rows = cur.fetchall()
-            if not rows:
-                print(f"Added {message}")
-                cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
-
-    conn.commit()
-    secondaryParent.clear()
 
 def call_randomizer():
     print("randomized.py loaded successfully")

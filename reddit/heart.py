@@ -76,25 +76,25 @@ def logData():
             port=os.environ["PG_PORT"],
             host=os.environ["PG_HOST"]
         )
+
+        cur = conn.cursor()
+
+        for message in parentReply:
+            message = re.sub(r"u/[^ ]+", "", message)
+            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
+            rows = cur.fetchall()
+            if not rows:
+                print(f"Added {message}")
+                cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
+
+        conn.commit()
+        parentReply.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
 
-    cur = conn.cursor()
-
-    for message in parentReply:
-        message = re.sub(r"u/[^ ]+", "", message)
-        cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
-        rows = cur.fetchall()
-        if not rows:
-            print(f"Added {message}")
-            cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
-
-    conn.commit()
-    parentReply.clear()
-
 
 def call_gather():
-    print("heart.py loaded successfuly")
+    print("heart.py loaded successfully")
     while True:
         gather()
         time.sleep(random.randint(30, 60))

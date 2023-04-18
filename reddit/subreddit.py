@@ -79,23 +79,24 @@ def logData():
             port=os.environ["PG_PORT"],
             host=os.environ["PG_HOST"]
         )
+
+        cur = conn.cursor()
+
+        for message in messages:
+            message = re.sub(r"u/[^ ]+", "", message)
+            if message:
+                cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
+                rows = cur.fetchall()
+                if not rows:
+                    print(f"Added {message}")
+                    cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
+
+        conn.commit()
+        print("Added messages successfully to DB, returning")
+        messages.clear()
     except KeyError:
         print("Missing or wrong DB credentials.")
 
-    cur = conn.cursor()
-
-    for message in messages:
-        message = re.sub(r"u/[^ ]+", "", message)
-        if message:
-            cur.execute('SELECT * FROM "wscp_data" WHERE "message" = %s', (message,))
-            rows = cur.fetchall()
-            if not rows:
-                print(f"Added {message}")
-                cur.execute('INSERT INTO "wscp_data" ("message", "source") VALUES (%s, %s)', (message, "Reddit"))
-
-    conn.commit()
-    print("Added messages successfully to DB, returning")
-    messages.clear()
 
 def call_subreddit():
     print("subreddit.py loaded successfully")

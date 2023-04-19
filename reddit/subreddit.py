@@ -114,7 +114,7 @@ def logData():
 
 
 def call_subreddit():
-    print("subreddit.py loaded successfully")
+    print(style.RESET + "subreddit.py loaded successfully")
     while True:
         crawl()
         time.sleep(random.randint(30, 60))

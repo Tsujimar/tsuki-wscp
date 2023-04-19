@@ -110,7 +110,7 @@ def logData():
 
 
 def call_gather():
-    print("heart.py loaded successfully")
+    print(style.RESET + "heart.py loaded successfully")
     while True:
         gather()
         time.sleep(random.randint(30, 60))

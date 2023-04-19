@@ -77,7 +77,7 @@ def logData():
 
 
 def call_randomizer():
-    print("randomized.py loaded successfully")
+    print(style.RESET + "randomized.py loaded successfully")
     while True:
         crawl()
         time.sleep(random.randint(30, 60))

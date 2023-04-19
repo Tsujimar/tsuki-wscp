@@ -30,18 +30,26 @@ def launch_threads(delay, optional_nsfw):
 
 
 def init_harvester():
+    optional_nsfw = False
     if len(argv) < 3 or argv[1] != "-s":
         print("Usage: python3 tsuki-wscp [-s {1-5}] [--nsfw-toggle]")
         exit()
-
-    delay = int(argv[2])
+    if int(argv[2]) < 1 or int(argv[2]) > 5:
+        delay = int(argv[2])
     if not 1 <= delay <= 5:
         print("Enter a value between 1-5")
         exit()
-
-    optional_nsfw = False
-    if len(argv) == 4 and argv[3] == "--nsfw-toggle":
-        optional_nsfw = True
+    if len(argv) == 4:
+        if argv[3] == "--nsfw-toggle":
+            delay = int(argv[2])
+            optional_nsfw = True
+            launch_threads(delay, optional_nsfw)
+        else:
+            print(f"Optional parameter is [--nsfw-toggle] not [{argv[3]}]")
+            exit()
+    elif len(argv) > 4:
+        print("Too many arguments")
+        exit()
 
     launch_threads(delay, optional_nsfw)
 

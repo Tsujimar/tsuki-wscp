@@ -1,4 +1,4 @@
-## tsuki-wscp
+## tsuki-wscp [v 0.1]
 tsuki-wscp is a web scraper that provides data collection for AI model training
 ## Supported sources (more to come)
 - 4Chan

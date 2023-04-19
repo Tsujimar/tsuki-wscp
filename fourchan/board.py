@@ -31,7 +31,12 @@ def crawler(delay, is_nsfw):
         )
 
         cur = conn.cursor()
-        driver = webdriver.Firefox()
+        try:
+            driver = webdriver.Firefox()
+        except WebDriverException:
+            print(style.YELLOW + "[4Chan]", end='')
+            print(style.RED + "Firefox developer browser was not found.")
+            exit()
         sfw_boards = ['a', 'c', 'w', 'm', 'cgl', 'cm', 'lgbt', '3', 'adv', 'an', 'biz', 'cgl', 'ck', 'co', 'diy', 'fa',
                       'fit', 'gd',
                       'his', 'int', 'jp', 'lit', 'mlp', 'mu', 'n', 'news', 'out', 'po', 'pw', 'qst', 'sci', 'sp', 'tg',

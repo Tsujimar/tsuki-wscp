@@ -35,8 +35,6 @@ def init_harvester():
         print("Usage: python3 tsuki-wscp [-s {1-5}] [--nsfw-toggle]")
         exit()
     if int(argv[2]) < 1 or int(argv[2]) > 5:
-        delay = int(argv[2])
-    if not 1 <= delay <= 5:
         print("Enter a value between 1-5")
         exit()
     if len(argv) == 4:
@@ -50,8 +48,9 @@ def init_harvester():
     elif len(argv) > 4:
         print("Too many arguments")
         exit()
-
-    launch_threads(delay, optional_nsfw)
+    elif len(argv) == 3:
+        delay = int(argv[2])
+        launch_threads(delay, optional_nsfw)
 
 
 if platform == "linux":

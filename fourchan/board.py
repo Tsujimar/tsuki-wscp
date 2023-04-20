@@ -126,9 +126,6 @@ def crawler(delay, is_nsfw):
             count = 2
 
 
-crawler(1, False)
-
-
 def call_crawler(delay, is_nsfw):
     print("board.py loaded successfully")
     while True:

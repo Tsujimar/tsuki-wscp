@@ -2,6 +2,7 @@ import json
 import time
 from urllib import request, error
 import psycopg2
+from psycopg2 import OperationalError
 import os
 import random
 import re
@@ -107,10 +108,15 @@ def logData():
 
         conn.commit()
         messages.clear()
-    except KeyError:
-        print(style.YELLOW + "[Reddit]", end='')
-        print(style.RED + "Missing or wrong DB credentials.")
-        exit()
+    except Exception as e:
+        if type(e) == KeyError:
+            print(style.YELLOW + "[Reddit]", end='')
+            print(style.RED + "DB service inactive")
+            exit()
+        elif type(e) == OperationalError:
+            print(style.YELLOW + "[Reddit]", end='')
+            print(style.RED + "Missing or wrong DB credentials.")
+            exit()
 
 
 def call_subreddit():

@@ -1,8 +1,9 @@
-## tsuki-wscp [v 0.1]
+## tsuki-wscp [v0.2.0]
 tsuki-wscp is a web scraper that provides data collection for AI model training
 ## Supported sources (more to come)
 - 4Chan
 - Reddit
+- Twitter
 ## What to expect
 ![average rows a sec](https://i.gyazo.com/06451df4560e2bab153d61f1efd4dae5.png)
 - Apx 100-130 data rows a second

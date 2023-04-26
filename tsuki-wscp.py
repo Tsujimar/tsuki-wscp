@@ -5,11 +5,13 @@ import threading
 
 sys.path.append("/4Chan")
 sys.path.append("/reddit")
+sys.path.append("/twitter")
 
 from fourchan.board import call_crawler
 from reddit.heart import call_gather
 from reddit.randomized import call_randomizer
 from reddit.subreddit import call_subreddit
+from twitter.spidermusk import call_spidermusk
 
 
 def launch_threads(delay, optional_nsfw):
@@ -17,16 +19,19 @@ def launch_threads(delay, optional_nsfw):
     t2 = threading.Thread(target=call_gather)
     t3 = threading.Thread(target=call_randomizer)
     t4 = threading.Thread(target=call_subreddit)
+    t5 = threading.Thread(target=call_spidermusk)
 
     t1.start()
     t2.start()
     t3.start()
     t4.start()
+    t5.start()
 
     t1.join()
     t2.join()
     t3.join()
     t4.join()
+    # t5.join() [UNSTABLE - If an unexpected error occurs, it might crash the whole script!]
 
 
 def init_harvester():

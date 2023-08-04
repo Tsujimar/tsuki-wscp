@@ -339,5 +339,6 @@ def spidercrawler(delay):
 
 def call_spidermusk(delay=30):
     print(style.RED + "[BETA] " + style.RESET + "spidermusk loaded successfully")
+    print(style.RED + "spidermusk [ALERT] " + style.RESET + "We're aware of the issues regarding tsuki-wscp's Twitter scraping issue after Twitter changed their frontend&backend mechanisms. We're working on fixing it.")
     while True:
         spidercrawler(delay)
